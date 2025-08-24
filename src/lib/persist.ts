@@ -25,7 +25,7 @@ export async function persist<S extends Record<string, any>>(store: Store<S>, op
         if (raw) {
             const data = JSON.parse(raw) as { v: number; s: any }
             const next = typeof migrate === 'function' && data.v !== version ? migrate(data.s, data.v) : (data.s as S)
-            store.setState(() => next, true, '@@persist/rehydrate')
+            store.setState(() => next, '@@persist/rehydrate')
             onRehydrate?.(store.getState())
         }
     } catch (e) {
