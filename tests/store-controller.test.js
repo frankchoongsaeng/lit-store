@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
-import { createStore, shallow } from '../build/store.js'
-import { StoreController } from '../build/store-controller.js'
+import { createStore, shallow } from '../dist/lib/store.js'
+import { StoreController } from '../dist/lib/store-controller.js'
 
 const flush = () => new Promise(res => setTimeout(res, 0))
 

@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
-import { createStore } from '../build/store.js'
-import { persist, localStorageAdapter } from '../build/persist.js'
+import { createStore } from '../dist/lib/store.js'
+import { persist, localStorageAdapter } from '../dist/lib/persist.js'
 
 const flush = () => new Promise(res => setTimeout(res, 0))
 

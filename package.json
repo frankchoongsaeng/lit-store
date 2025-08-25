@@ -2,16 +2,38 @@
     "name": "lit-store",
     "version": "0.0.1",
     "type": "module",
+    "main": "./dist/lib/index.js",
+    "module": "./dist/lib/index.js",
+    "types": "./dist/lib/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/lib/index.js",
+            "require": "./dist/lib/index.js",
+            "types": "./dist/lib/index.d.ts"
+        },
+        "./devtools": {
+            "import": "./dist/devtools/index.js",
+            "require": "./dist/devtools/index.js",
+            "types": "./dist/devtools/index.d.ts"
+        }
+    },
+    "files": [
+        "dist/lib",
+        "dist/devtools"
+    ],
     "scripts": {
         "dev": "vite",
-        "build": "vite build",
+        "build": "tsc -p tsconfig.json",
+        "build:demo": "vite build",
         "preview": "vite preview",
-        "test": "npx tsc src/lib/*.ts --outDir build --module ES2020 --target ES2020 --moduleResolution node --skipLibCheck && node --test tests/*.js"
+        "test": "npm run build && node --test tests/*.js"
     },
-    "dependencies": {
+    "peerDependencies": {
         "lit": "^3.3.1"
     },
     "devDependencies": {
-        "vite": "^7.1.3"
+        "lit": "^3.3.1",
+        "vite": "^7.1.3",
+        "typescript": "^5.3.3"
     }
 }
