@@ -5,7 +5,8 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "test": "npx tsc src/lib/*.ts --outDir build --module ES2020 --target ES2020 --moduleResolution node --skipLibCheck && node --test tests/*.js"
     },
     "dependencies": {
         "lit": "^3.3.1"
