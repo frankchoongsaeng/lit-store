@@ -1,4 +1,3 @@
-// counter.ts
 import { createStore } from '../../lib/store'
 
 export type CounterState = { count: number }

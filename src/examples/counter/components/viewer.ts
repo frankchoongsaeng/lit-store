@@ -14,7 +14,7 @@ export class ViewerElement extends LitElement {
     count = new StoreController(this, counterStore, s => s.count)
 
     render() {
-        console.log('viewer element rendered')
+        console.log('viewer element rendered') // This will log when count changes because StoreController subscribes to updates from the store
         return html`<div>Count: <span class="count">${this.count.value}</span></div>`
     }
 }

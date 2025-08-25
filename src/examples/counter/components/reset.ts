@@ -11,7 +11,7 @@ export class ResetElement extends LitElement {
     `
 
     render() {
-        console.log('reset element rendered')
+        console.log('reset element rendered') // This will only log once because we are not subscribed to updates from the store
         return html` <button @click=${() => actions.reset()}>0</button>`
     }
 }

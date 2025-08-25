@@ -1,4 +1,3 @@
-// bootstrap.ts
 import { persist, localStorageAdapter } from '../../lib/persist'
 import { withDevtools } from '../../devtools/redux'
 import { counterStore } from './state'

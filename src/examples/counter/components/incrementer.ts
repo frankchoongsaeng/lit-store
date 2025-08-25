@@ -11,7 +11,7 @@ export class IncrementerElement extends LitElement {
     `
 
     render() {
-        console.log('incrementer element rendered')
+        console.log('incrementer element rendered') // This will only log once because we are not subscribed to updates from the store
         return html` <button @click=${() => actions.inc()}>+</button> `
     }
 }
