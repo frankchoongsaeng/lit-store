@@ -15,7 +15,7 @@ connecting state to Lit elements.
 ## Installation
 
 ```bash
-npm install lit-store
+npm install @frankchoongsaeng/lit-store
 ```
 
 ## Basic Usage
@@ -24,8 +24,8 @@ Create a store and use the `StoreController` inside a Lit element:
 
 ```ts
 import { html, LitElement } from 'lit'
-import { createStore } from 'lit-store/lib/store'
-import { StoreController } from 'lit-store/lib/store-controller'
+import { createStore } from '@frankchoongsaeng/lit-store/lib/store'
+import { StoreController } from '@frankchoongsaeng/lit-store/lib/store-controller'
 
 const store = createStore({ count: 0 })
 
@@ -47,7 +47,7 @@ class CounterElement extends LitElement {
 To persist state across reloads, wrap a store with `persist` and an adapter:
 
 ```ts
-import { persist, localStorageAdapter } from 'lit-store/lib/persist'
+import { persist, localStorageAdapter } from '@frankchoongsaeng/lit-store/lib/persist'
 
 persist(store, { key: 'counter', adapter: localStorageAdapter })
 ```
@@ -57,7 +57,7 @@ persist(store, { key: 'counter', adapter: localStorageAdapter })
 Use `withDevtools` to connect a store to the Redux DevTools extension:
 
 ```ts
-import { withDevtools } from 'lit-store/devtools/redux'
+import { withDevtools } from '@frankchoongsaeng/lit-store/devtools/redux'
 
 withDevtools(store, 'counter')
 ```
