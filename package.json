@@ -1,6 +1,7 @@
 {
     "name": "lit-store",
     "version": "0.0.1",
+    "license": "MIT",
     "type": "module",
     "main": "./dist/lib/index.js",
     "module": "./dist/lib/index.js",
