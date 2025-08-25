@@ -1,14 +1,25 @@
-// store-controller.ts
+/**
+ * Lit reactive controller that subscribes to a store and exposes selected
+ * slices of state to Lit components.
+ */
 import { ReactiveController, ReactiveControllerHost } from 'lit'
 import type { Store, EqualityFn } from './store'
 import { StateObject } from './store'
 
 // ---- Types ----
+
+/** Selects a value from state. */
 type Selector<S, T> = (s: S) => T
+
+/** Mapping of names to selectors. */
 type SelectorMap<S> = Record<string, Selector<S, any>>
+
+/** Mapping of selector names to custom equality functions. */
 type EqMap<M extends SelectorMap<any>> = {
     [K in keyof M]?: EqualityFn<ReturnType<M[K]>>
 }
+
+/** Object containing the values picked by a struct of selectors. */
 type Selected<M extends SelectorMap<any>> = {
     [K in keyof M]: ReturnType<M[K]>
 }
@@ -16,6 +27,10 @@ type Selected<M extends SelectorMap<any>> = {
 // ---- Utilities ----
 const is = Object.is
 
+/**
+ * Builds an equality function that compares two selector result objects field
+ * by field using optional per-field equality functions.
+ */
 function structEq<M extends SelectorMap<any>>(eqs?: EqMap<M>): EqualityFn<Selected<M>> {
     return (a, b) => {
         if (a === b) return true
@@ -27,6 +42,10 @@ function structEq<M extends SelectorMap<any>>(eqs?: EqMap<M>): EqualityFn<Select
     }
 }
 
+/**
+ * Composes a struct of selectors into a single selector that returns an
+ * object mapping the same keys to selected values.
+ */
 function composeStructSelector<S, M extends SelectorMap<S>>(map: M) {
     const entries = Object.entries(map) as [keyof M, (s: S) => any][]
     return (s: S) => {
@@ -36,6 +55,11 @@ function composeStructSelector<S, M extends SelectorMap<S>>(map: M) {
     }
 }
 
+/**
+ * Reactive controller that keeps a Lit component in sync with selected values
+ * from a store. The selected value can be either a single selector or a struct
+ * of selectors.
+ */
 export class StoreController<S extends StateObject, T> implements ReactiveController {
     #host: ReactiveControllerHost
     #store: Store<S>
@@ -71,6 +95,7 @@ export class StoreController<S extends StateObject, T> implements ReactiveContro
         host.addController(this)
     }
 
+    /** Start watching the store when the host connects. */
     hostConnected() {
         const add = this.#store.subscribe(this.#pick, this.#eq)
         this.#unsub = add((next, prev) => {
@@ -79,11 +104,13 @@ export class StoreController<S extends StateObject, T> implements ReactiveContro
         })
     }
 
+    /** Stop watching the store when the host disconnects. */
     hostDisconnected() {
         this.#unsub?.()
         this.#unsub = undefined
     }
 
+    /** The current selected value. */
     get value(): T {
         if (this.#val === undefined) this.#val = this.#pick(this.#store.getState())
         return this.#val

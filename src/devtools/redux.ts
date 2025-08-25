@@ -1,6 +1,9 @@
-// devtools.ts
+/**
+ * Integration with the Redux DevTools browser extension.
+ */
 import type { Store } from '../lib/store'
 
+/** Minimal interface for the Redux DevTools extension. */
 type ReduxDevtools = {
     connect(opts: { name?: string }): {
         init(state: any): void
@@ -8,6 +11,10 @@ type ReduxDevtools = {
     }
 }
 
+/**
+ * Wraps a store to report actions and state changes to the Redux DevTools
+ * extension, if present.
+ */
 export function withDevtools<S extends Record<string, any>>(store: Store<S>, name = 'lit-state') {
     const ext = (globalThis as any).__REDUX_DEVTOOLS_EXTENSION__ as ReduxDevtools | undefined
     if (!ext) return store

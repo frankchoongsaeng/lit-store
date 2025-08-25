@@ -1,21 +1,37 @@
-// persist.ts
+/**
+ * Utilities for persisting store state to a storage adapter such as
+ * `localStorage`.
+ */
 import type { Store } from './store'
 
+/** Adapter interface used to read and write serialized state. */
 export type PersistAdapter = {
     getItem(key: string): Promise<string | null> | string | null
     setItem(key: string, value: string): Promise<void> | void
     removeItem?(key: string): Promise<void> | void
 }
 
+/** Options controlling persistence behaviour. */
 export type PersistOptions<S> = {
+    /** Storage key used to save the state. */
     key: string
+    /** Storage adapter implementation. */
     adapter: PersistAdapter
+    /** Version number to detect migrations. */
     version?: number
+    /** Function used to migrate old state when versions mismatch. */
     migrate?: (oldState: any, oldVersion: number) => S
-    partialize?: (s: S) => any // choose what to save
+    /** Selects part of the state to persist. */
+    partialize?: (s: S) => any
+    /** Called after the state has been rehydrated. */
     onRehydrate?: (s: S) => void
 }
 
+/**
+ * Persists the store's state using the provided adapter and options. The
+ * store is first rehydrated from storage and then any subsequent changes are
+ * saved.
+ */
 export async function persist<S extends Record<string, any>>(store: Store<S>, opts: PersistOptions<S>) {
     const { key, adapter, version = 1, migrate, partialize = s => s, onRehydrate } = opts
 
@@ -46,6 +62,10 @@ export async function persist<S extends Record<string, any>>(store: Store<S>, op
 }
 
 // Common adapters:
+/**
+ * Adapter that persists state to `globalThis.localStorage`. It gracefully
+ * handles environments where `localStorage` is unavailable.
+ */
 export const localStorageAdapter: PersistAdapter = {
     getItem: k => {
         try {
